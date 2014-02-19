@@ -1,8 +1,13 @@
-Teensy 2.0 and 3.0 core libraries for Arduino.
+Dennao gadget SDK
+=================
 
-The latest stable version of Teensy's core library is always available in the Teensyduino installer, at this page:
 
+
+
+
+
+Credits
+-------
+
+This SDK is based on Teensyduino project 
 http://www.pjrc.com/teensy/td_download.html
-
-
-

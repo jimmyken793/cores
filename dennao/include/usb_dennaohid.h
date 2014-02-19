@@ -28,30 +28,38 @@
  * SOFTWARE.
  */
 
-#ifndef _usb_names_h_
-#define _usb_names_h_
+#ifndef USBrawhid_h_
+#define USBrawhid_h_
 
-// These definitions are intended to allow users to override the default
-// USB manufacturer, product and serial number strings.
+#if defined(USB_DENNAOHID)
 
-#include <stdint.h>
+#include <inttypes.h>
 
+// C language implementation
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-struct usb_string_descriptor_struct {
-	uint8_t bLength;
-	uint8_t bDescriptorType;
-	uint16_t wString[];
-};
-
-extern struct usb_string_descriptor_struct usb_string_manufacturer_name;
-extern struct usb_string_descriptor_struct usb_string_product_name;
-extern struct usb_string_descriptor_struct usb_string_serial_number;
-
+int usb_rawhid_recv(void *buffer, uint32_t timeout);
+int usb_rawhid_available(void);
+int usb_rawhid_send(const void *buffer, uint32_t timeout);
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+
+// C++ interface
+#ifdef __cplusplus
+class usb_rawhid_class
+{
+public:
+	int available(void) {return usb_rawhid_available(); }
+	int recv(void *buffer, uint16_t timeout) { return usb_rawhid_recv(buffer, timeout); }
+	int send(const void *buffer, uint16_t timeout) { return usb_rawhid_send(buffer, timeout); }
+};
+
+extern usb_rawhid_class RawHID;
+
+#endif // __cplusplus
+
+#endif // USB_HID
+#endif // USBrawhid_h_

@@ -224,39 +224,39 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define ENDPOINT4_CONFIG	ENDPOINT_RECEIVE_ONLY
 
 #elif defined(USB_RAWHID)
-  #define VENDOR_ID		0x16C0
-  #define PRODUCT_ID		0x0486
-  #define RAWHID_USAGE_PAGE	0xFFAB  // recommended: 0xFF00 to 0xFFFF
-  #define RAWHID_USAGE		0x0200  // recommended: 0x0100 to 0xFFFF
-  #define MANUFACTURER_NAME	{'T','e','e','n','s','y','d','u','i','n','o'}
-  #define MANUFACTURER_NAME_LEN	11
-  #define PRODUCT_NAME		{'T','e','e','n','s','y','d','u','i','n','o',' ','R','a','w','H','I','D'}
-  #define PRODUCT_NAME_LEN	18
-  #define EP0_SIZE		64
+  #define VENDOR_ID   0x16C0
+  #define PRODUCT_ID    0x0486
+  #define RAWHID_USAGE_PAGE 0xFFAB  // recommended: 0xFF00 to 0xFFFF
+  #define RAWHID_USAGE    0x0200  // recommended: 0x0100 to 0xFFFF
+  #define MANUFACTURER_NAME {'T','e','e','n','s','y','d','u','i','n','o'}
+  #define MANUFACTURER_NAME_LEN 11
+  #define PRODUCT_NAME    {'T','e','e','n','s','y','d','u','i','n','o',' ','R','a','w','H','I','D'}
+  #define PRODUCT_NAME_LEN  18
+  #define EP0_SIZE    64
   #define NUM_ENDPOINTS         6
-  #define NUM_USB_BUFFERS	12
-  #define NUM_INTERFACE		2
-  #define RAWHID_INTERFACE      0	// RawHID
+  #define NUM_USB_BUFFERS 12
+  #define NUM_INTERFACE   2
+  #define RAWHID_INTERFACE      0 // RawHID
   #define RAWHID_TX_ENDPOINT    3
   #define RAWHID_TX_SIZE        64
   #define RAWHID_TX_INTERVAL    1
   #define RAWHID_RX_ENDPOINT    4
   #define RAWHID_RX_SIZE        64
   #define RAWHID_RX_INTERVAL    1
-  #define SEREMU_INTERFACE      1	// Serial emulation
+  #define SEREMU_INTERFACE      1 // Serial emulation
   #define SEREMU_TX_ENDPOINT    1
   #define SEREMU_TX_SIZE        64
   #define SEREMU_TX_INTERVAL    1
   #define SEREMU_RX_ENDPOINT    2
   #define SEREMU_RX_SIZE        32
   #define SEREMU_RX_INTERVAL    2
-  #define RAWHID_DESC_OFFSET	(9 + 9)
-  #define SEREMU_DESC_OFFSET	(9 + 9+9+7+7 + 9)
-  #define CONFIG_DESC_SIZE	(9 + 9+9+7+7 + 9+9+7+7)
-  #define ENDPOINT1_CONFIG	ENDPOINT_TRANSIMIT_ONLY
-  #define ENDPOINT2_CONFIG	ENDPOINT_RECEIVE_ONLY
-  #define ENDPOINT3_CONFIG	ENDPOINT_TRANSIMIT_ONLY
-  #define ENDPOINT4_CONFIG	ENDPOINT_RECEIVE_ONLY
+  #define RAWHID_DESC_OFFSET  (9 + 9)
+  #define SEREMU_DESC_OFFSET  (9 + 9+9+7+7 + 9)
+  #define CONFIG_DESC_SIZE  (9 + 9+9+7+7 + 9+9+7+7)
+  #define ENDPOINT1_CONFIG  ENDPOINT_TRANSIMIT_ONLY
+  #define ENDPOINT2_CONFIG  ENDPOINT_RECEIVE_ONLY
+  #define ENDPOINT3_CONFIG  ENDPOINT_TRANSIMIT_ONLY
+  #define ENDPOINT4_CONFIG  ENDPOINT_RECEIVE_ONLY
 
 #elif defined(USB_FLIGHTSIM)
   #define VENDOR_ID		0x16C0
@@ -291,6 +291,53 @@ let me know?  http://forum.pjrc.com/forums/4-Suggestions-amp-Bug-Reports
   #define ENDPOINT3_CONFIG	ENDPOINT_TRANSIMIT_ONLY
   #define ENDPOINT4_CONFIG	ENDPOINT_RECEIVE_ONLY
 
+#elif defined(USB_DENNAOHID)
+
+#ifndef VENDOR_ID
+  #define VENDOR_ID   0x16C0
+#endif
+#ifndef MANUFACTURER_NAME
+  #define MANUFACTURER_NAME {'T','e','e','n','s','y','d','u','i','n','o'}
+#endif
+#ifndef MANUFACTURER_NAME_LEN
+  #define MANUFACTURER_NAME_LEN (11)
+#endif
+#ifndef PRODUCT_NAME
+  #define PRODUCT_NAME      {'T','e','e','n','s','y','d','u','i','n','o'}
+#endif
+#ifndef PRODUCT_NAME_LEN
+  #define PRODUCT_NAME_LEN  (11)
+#endif
+#ifndef PRODUCT_ID
+  #define PRODUCT_ID    sizeof(wchar_t)
+#endif
+  #define RAWHID_USAGE_PAGE 0xFFAB  // recommended: 0xFF00 to 0xFFFF
+  #define RAWHID_USAGE    0x0200  // recommended: 0x0100 to 0xFFFF
+  #define EP0_SIZE    64
+  #define NUM_ENDPOINTS         6
+  #define NUM_USB_BUFFERS 12
+  #define NUM_INTERFACE   2
+  #define DENNAOHID_INTERFACE   0 // DennaoHID
+  #define RAWHID_TX_ENDPOINT    3
+  #define RAWHID_TX_SIZE        64
+  #define RAWHID_TX_INTERVAL    1
+  #define RAWHID_RX_ENDPOINT    4
+  #define RAWHID_RX_SIZE        64
+  #define RAWHID_RX_INTERVAL    1
+  #define SEREMU_INTERFACE      1 // Serial emulation
+  #define SEREMU_TX_ENDPOINT    1
+  #define SEREMU_TX_SIZE        64
+  #define SEREMU_TX_INTERVAL    1
+  #define SEREMU_RX_ENDPOINT    2
+  #define SEREMU_RX_SIZE        32
+  #define SEREMU_RX_INTERVAL    2
+  #define RAWHID_DESC_OFFSET  (9 + 9)
+  #define SEREMU_DESC_OFFSET  (9 + 9+9+7+7 + 9)
+  #define CONFIG_DESC_SIZE  (9 + 9+9+7+7 + 9+9+7+7)
+  #define ENDPOINT1_CONFIG  ENDPOINT_TRANSIMIT_ONLY
+  #define ENDPOINT2_CONFIG  ENDPOINT_RECEIVE_ONLY
+  #define ENDPOINT3_CONFIG  ENDPOINT_TRANSIMIT_ONLY
+  #define ENDPOINT4_CONFIG  ENDPOINT_RECEIVE_ONLY
 #endif
 
 // NUM_ENDPOINTS = number of non-zero endpoints (0 to 15)
