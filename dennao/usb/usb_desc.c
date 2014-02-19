@@ -591,10 +591,15 @@ static uint8_t config_descriptor[CONFIG_DESC_SIZE] = {
         DENNAO_INTERFACE,                       // bInterfaceNumber
         0,                                      // bAlternateSetting
         2,                                      // bNumEndpoints
+#ifdef DENNAO_USE_HID
         0x03,                                   // bInterfaceClass (0x03 = HID)
+#else
+        0xFF,                                   // bInterfaceClass (0x03 = HID)
+#endif
         0x00,                                   // bInterfaceSubClass
         0x00,                                   // bInterfaceProtocol
         0,                                      // iInterface
+#ifdef DENNAO_USE_HID
         // HID interface descriptor, HID 1.11 spec, section 6.2.1
         9,                                      // bLength
         0x21,                                   // bDescriptorType
@@ -604,6 +609,7 @@ static uint8_t config_descriptor[CONFIG_DESC_SIZE] = {
         0x22,                                   // bDescriptorType
         LSB(sizeof(dennao_report_desc)),        // wDescriptorLength
         MSB(sizeof(dennao_report_desc)),
+#endif
         // endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
         7,                                      // bLength
         5,                                      // bDescriptorType
