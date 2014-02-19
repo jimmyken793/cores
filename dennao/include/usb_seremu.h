@@ -31,7 +31,7 @@
 #ifndef USBseremu_h_
 #define USBseremu_h_
 
-#if defined(USB_HID) || defined(USB_MIDI) || defined(USB_RAWHID) || defined(USB_FLIGHTSIM)
+#if defined(USB_HID) || defined(USB_MIDI) || defined(USB_RAWHID) || defined(USB_DENNAO) || defined(USB_FLIGHTSIM)
 
 #include <inttypes.h>
 

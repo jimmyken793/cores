@@ -20,7 +20,7 @@ LIB_CPP_SRC= $(ROOT_PATH)/usb/usb_inst.cpp \
 	$(ROOT_PATH)/arduino/avr_emulation.cpp \
 	$(ROOT_PATH)/arduino/HardwareSerial3.cpp
 
-LIB_C_SRC = $(ROOT_PATH)/usb/usb_dennaohid.c \
+LIB_C_SRC = $(ROOT_PATH)/usb/usb_dennao.c \
 	$(ROOT_PATH)/usb/usb_dev.c \
 	$(ROOT_PATH)/usb/usb_keyboard.c \
 	$(ROOT_PATH)/usb/usb_mem.c \
@@ -75,7 +75,8 @@ OBJDUMP = $(GCCDIR)arm-none-eabi-objdump
 
 # CPPFLAGS = compiler options for C and C++
 CPPFLAGS = -Wall -g -Os -mcpu=cortex-m4 -mthumb -nostdlib -MMD $(OPTIONS) -I$(ROOT_PATH)/include -I./ \
-	-DF_CPU=$(F_CPU) -D__MK20DX128__ -DTEENSYDUINO=117 -DLAYOUT_US_INTERNATIONAL -DUSB_RAWHID -DARDUINO 
+	-DF_CPU=$(F_CPU) -D__MK20DX128__ -DTEENSYDUINO=117 -DLAYOUT_US_INTERNATIONAL -DUSB_DENNAO -DARDUINO \
+	-fshort-wchar
 
 # compiler options for C++ only
 CXXFLAGS = -std=gnu++0x -felide-constructors -fno-exceptions -fno-rtti

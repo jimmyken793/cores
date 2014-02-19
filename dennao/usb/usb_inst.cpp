@@ -65,3 +65,7 @@ FlightSimClass FlightSim;
 usb_seremu_class Serial;
 #endif
 
+#ifdef USB_DENNAO
+usb_dennao_class Dennao;
+usb_seremu_class Serial;
+#endif

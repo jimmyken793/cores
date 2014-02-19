@@ -31,17 +31,18 @@
 #ifndef USBrawhid_h_
 #define USBrawhid_h_
 
-#if defined(USB_DENNAOHID)
+#if defined(USB_DENNAO)
 
 #include <inttypes.h>
+#include <usb_desc.h>
 
 // C language implementation
 #ifdef __cplusplus
 extern "C" {
 #endif
-int usb_rawhid_recv(void *buffer, uint32_t timeout);
-int usb_rawhid_available(void);
-int usb_rawhid_send(const void *buffer, uint32_t timeout);
+int usb_dennao_recv(void *buffer, const uint16_t len, uint16_t timeout);
+int usb_dennao_available(void);
+int usb_dennao_send(const void *buffer, const uint16_t len, uint16_t timeout);
 #ifdef __cplusplus
 }
 #endif
@@ -49,17 +50,20 @@ int usb_rawhid_send(const void *buffer, uint32_t timeout);
 
 // C++ interface
 #ifdef __cplusplus
-class usb_rawhid_class
+class usb_dennao_class
 {
 public:
-	int available(void) {return usb_rawhid_available(); }
-	int recv(void *buffer, uint16_t timeout) { return usb_rawhid_recv(buffer, timeout); }
-	int send(const void *buffer, uint16_t timeout) { return usb_rawhid_send(buffer, timeout); }
+	int available(void) {return usb_dennao_available(); }
+	int recv(void *buffer, const uint16_t len, uint16_t timeout) { return usb_dennao_recv(buffer, len, timeout); }
+	int recv(void *buffer, uint16_t timeout) { return usb_dennao_recv(buffer, DENNAO_RX_SIZE, timeout); }
+	int send(const void *buffer, const uint16_t len, uint16_t timeout) { return usb_dennao_send(buffer, len, timeout); }
+	int send(const void *buffer, uint16_t timeout) { return usb_dennao_send(buffer, DENNAO_TX_SIZE, timeout); }
 };
 
-extern usb_rawhid_class RawHID;
+extern usb_dennao_class Dennao;
 
 #endif // __cplusplus
 
-#endif // USB_HID
+#endif // USB_DENNAO
+
 #endif // USBrawhid_h_

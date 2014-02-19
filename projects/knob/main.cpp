@@ -1,29 +1,17 @@
 #include "WProgram.h"
+#include "usb_dennao.h"
 
-/*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
- 
-  This example code is in the public domain.
- */
- 
-// Pin 13 has an LED connected on most Arduino boards.
-// Pin 11 has the LED on Teensy 2.0
-// Pin 6  has the LED on Teensy++ 2.0
-// Pin 13 has the LED on Teensy 3.0
-// give it a name:
-int led = 13;
-
-// the setup routine runs once when you press reset:
-void setup() {                
-  // initialize the digital pin as an output.
-  pinMode(led, OUTPUT);
+char buf[DENNAO_TX_SIZE];
+int pin = 11;
+void setup()
+{
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
 }
 
-// the loop routine runs over and over again forever:
-void loop() {
-  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(500);               // wait for a second
-  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-  delay(500);               // wait for a second
+void loop()
+{
+    uint16_t val = analogRead(0);
+    sprintf(buf, "%d", val);
+    Dennao.send(buf, strlen(buf),0);
 }

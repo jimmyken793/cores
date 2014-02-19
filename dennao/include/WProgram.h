@@ -22,6 +22,7 @@
 #include "avr_emulation.h"
 #include "usb_serial.h"
 #include "usb_seremu.h"
+#include "usb_dennao.h"
 #include "usb_keyboard.h"
 #include "usb_mouse.h"
 #include "usb_joystick.h"

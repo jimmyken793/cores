@@ -273,18 +273,18 @@ static uint8_t rawhid_report_desc[] = {
 };
 #endif
 
-#ifdef DENNAOHID_INTERFACE
-static uint8_t rawhid_report_desc[] = {
-        0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),
-        0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
+#ifdef DENNAO_INTERFACE
+static uint8_t dennao_report_desc[] = {
+        0x06, LSB(DENNAO_USAGE_PAGE), MSB(DENNAO_USAGE_PAGE),
+        0x0A, LSB(DENNAO_USAGE), MSB(DENNAO_USAGE),
         0xA1, 0x01,                             // Collection 0x01
         0x75, 0x08,                             // report size = 8 bits
         0x15, 0x00,                             // logical minimum = 0
         0x26, 0xFF, 0x00,                       // logical maximum = 255
-        0x95, RAWHID_TX_SIZE,                   // report count
+        0x95, DENNAO_TX_SIZE,                   // report count
         0x09, 0x01,                             // usage
         0x81, 0x02,                             // Input (array)
-        0x95, RAWHID_RX_SIZE,                   // report count
+        0x95, DENNAO_RX_SIZE,                   // report count
         0x09, 0x02,                             // usage
         0x91, 0x02,                             // Output (array)
         0xC0                                    // end collection
@@ -584,11 +584,11 @@ static uint8_t config_descriptor[CONFIG_DESC_SIZE] = {
         RAWHID_RX_INTERVAL,			// bInterval
 #endif // RAWHID_INTERFACE
 
-#ifdef DENNAOHID_INTERFACE
+#ifdef DENNAO_INTERFACE
         // interface descriptor, USB spec 9.6.5, page 267-269, Table 9-12
         9,                                      // bLength
         4,                                      // bDescriptorType
-        DENNAOHID_INTERFACE,                       // bInterfaceNumber
+        DENNAO_INTERFACE,                       // bInterfaceNumber
         0,                                      // bAlternateSetting
         2,                                      // bNumEndpoints
         0x03,                                   // bInterfaceClass (0x03 = HID)
@@ -602,23 +602,23 @@ static uint8_t config_descriptor[CONFIG_DESC_SIZE] = {
         0,                                      // bCountryCode
         1,                                      // bNumDescriptors
         0x22,                                   // bDescriptorType
-        LSB(sizeof(rawhid_report_desc)),        // wDescriptorLength
-        MSB(sizeof(rawhid_report_desc)),
+        LSB(sizeof(dennao_report_desc)),        // wDescriptorLength
+        MSB(sizeof(dennao_report_desc)),
         // endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
         7,                                      // bLength
         5,                                      // bDescriptorType
-        RAWHID_TX_ENDPOINT | 0x80,              // bEndpointAddress
+        DENNAO_TX_ENDPOINT | 0x80,              // bEndpointAddress
         0x03,                                   // bmAttributes (0x03=intr)
-        RAWHID_TX_SIZE, 0,                      // wMaxPacketSize
-        RAWHID_TX_INTERVAL,                     // bInterval
+        DENNAO_TX_SIZE, 0,                      // wMaxPacketSize
+        DENNAO_TX_INTERVAL,                     // bInterval
         // endpoint descriptor, USB spec 9.6.6, page 269-271, Table 9-13
         7,                                      // bLength
         5,                                      // bDescriptorType
-        RAWHID_RX_ENDPOINT,                     // bEndpointAddress
+        DENNAO_RX_ENDPOINT,                     // bEndpointAddress
         0x03,                                   // bmAttributes (0x03=intr)
-        RAWHID_RX_SIZE, 0,                      // wMaxPacketSize
-        RAWHID_RX_INTERVAL,                     // bInterval
-#endif // DENNAOHID_INTERFACE
+        DENNAO_RX_SIZE, 0,                      // wMaxPacketSize
+        DENNAO_RX_INTERVAL,                     // bInterval
+#endif // DENNAO_INTERFACE
 
 #ifdef FLIGHTSIM_INTERFACE
         // interface descriptor, USB spec 9.6.5, page 267-269, Table 9-12
@@ -822,9 +822,9 @@ const usb_descriptor_list_t usb_descriptor_list[] = {
         {0x2200, RAWHID_INTERFACE, rawhid_report_desc, sizeof(rawhid_report_desc)},
         {0x2100, RAWHID_INTERFACE, config_descriptor+RAWHID_DESC_OFFSET, 9},
 #endif
-#ifdef DENNAOHID_INTERFACE
-	{0x2200, DENNAOHID_INTERFACE, rawhid_report_desc, sizeof(rawhid_report_desc)},
-	{0x2100, DENNAOHID_INTERFACE, config_descriptor+RAWHID_DESC_OFFSET, 9},
+#ifdef DENNAO_INTERFACE
+	{0x2200, DENNAO_INTERFACE, dennao_report_desc, sizeof(dennao_report_desc)},
+	{0x2100, DENNAO_INTERFACE, config_descriptor+DENNAO_DESC_OFFSET, 9},
 #endif
 #ifdef FLIGHTSIM_INTERFACE
 	{0x2200, FLIGHTSIM_INTERFACE, flightsim_report_desc, sizeof(flightsim_report_desc)},
