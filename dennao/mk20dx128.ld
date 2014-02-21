@@ -1,4 +1,7 @@
-/* Teensyduino Core Library
+/* Linker script for application firmware loaded by FC-Boot.
+ * Originally based on:
+ *
+ * Teensyduino Core Library
  * http://www.pjrc.com/teensy/
  * Copyright (c) 2013 PJRC.COM, LLC.
  *
@@ -30,80 +33,88 @@
 
 MEMORY
 {
-	FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 128K
-	RAM  (rwx) : ORIGIN = 0x1FFFE000, LENGTH = 16K
+    FLASH (rx) : ORIGIN = 0x00001000, LENGTH = 124K
+    RAM  (rwx) : ORIGIN = 0x1FFFE000, LENGTH = 16K
+    FLEXRAM (rwx) : ORIGIN = 0x14000000, LENGTH = 2K
 }
 
 
 SECTIONS
 {
-	.text : {
-		. = 0;
-		KEEP(*(.vectors))
-		*(.startup*)
-		/* TODO: does linker detect startup overflow onto flashconfig? */
-		. = 0x400;
-		KEEP(*(.flashconfig*))
-		*(.text*)
-		*(.rodata*)
-		. = ALIGN(4);
-		KEEP(*(.init))
-		. = ALIGN(4);
-		__preinit_array_start = .;
-		KEEP (*(.preinit_array))
-		__preinit_array_end = .;
-		__init_array_start = .;
-		KEEP (*(SORT(.init_array.*)))
-		KEEP (*(.init_array))
-		__init_array_end = .;
-	} > FLASH = 0xFF
+    .text : {
+        . = 0;
+        KEEP(*(.vectors))
+        *(.startup)
+        *(.text*)
+        *(.rodata*)
+        . = ALIGN(4);
+        KEEP(*(.init))
+        . = ALIGN(4);
+        __preinit_array_start = .;
+        KEEP (*(.preinit_array))
+        __preinit_array_end = .;
+        __init_array_start = .;
+        KEEP (*(SORT(.init_array.*)))
+        KEEP (*(.init_array))
+        __init_array_end = .;
+    } > FLASH = 0xFF
 
-	.ARM.exidx : {
-		__exidx_start = .;
-		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-		__exidx_end = .;
-	} > FLASH
-	_etext = .;
+    .ARM.exidx : {
+        __exidx_start = .;
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        __exidx_end = .;
+    } > FLASH
+    _etext = .;
 
-	.usbdescriptortable (NOLOAD) : {
-		/* . = ORIGIN(RAM); */
-		. = ALIGN(512);
-		*(.usbdescriptortable*)
-	} > RAM
+    .flexram (NOLOAD) : {
+        . = ALIGN(4);
+        *(.flexram*)
+    } > FLEXRAM
 
-	.dmabuffers (NOLOAD) : {
-		. = ALIGN(4);
-		*(.dmabuffers*)
-	} > RAM
+    .usbdescriptortable (NOLOAD) : {
+        /* . = ORIGIN(RAM); */
+        . = ALIGN(512);
+        *(.usbdescriptortable*)
+    } > RAM
 
-	.usbbuffers (NOLOAD) : {
-		. = ALIGN(4);
-		*(.usbbuffers*)
-	} > RAM
+    .dmabuffers (NOLOAD) : {
+        . = ALIGN(4);
+        *(.dmabuffers*)
+    } > RAM
 
-	.data : AT (_etext) {
-		. = ALIGN(4);
-		_sdata = .; 
-		*(.data*)
-		. = ALIGN(4);
-		_edata = .; 
-	} > RAM
+    .usbbuffers (NOLOAD) : {
+        . = ALIGN(4);
+        *(.usbbuffers*)
+    } > RAM
 
-	.noinit (NOLOAD) : {
-		*(.noinit*)
-	} > RAM
+    .data : AT (_etext) {
+        . = ALIGN(4);
+        _sdata = .; 
+        *(.data*)
+        *(.ramtext*)
+        . = ALIGN(4);
+        _edata = .; 
+    } > RAM
 
-	.bss : {
-		. = ALIGN(4);
-		_sbss = .; 
-		*(.bss*)
-		*(COMMON)
-		. = ALIGN(4);
-		_ebss = .;
-		__bss_end = .;
-	} > RAM
+    .noinit (NOLOAD) : {
+        *(.noinit*)
+    } > RAM
 
-	_estack = ORIGIN(RAM) + LENGTH(RAM);
+    .bss : {
+        . = ALIGN(4);
+        _sbss = .; 
+        *(.bss*)
+        *(COMMON)
+        . = ALIGN(4);
+        _ebss = .;
+        __bss_end = .;
+    } > RAM
+
+    _estack = ORIGIN(RAM) + LENGTH(RAM) - 4;
+    boot_token = _estack;
+
+    _flexram_begin = ORIGIN(FLEXRAM);
+    _flexram_end = ORIGIN(FLEXRAM) + LENGTH(FLEXRAM);
 }
 
 

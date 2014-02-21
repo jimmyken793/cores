@@ -30,7 +30,6 @@
 
 #include "mk20dx128.h"
 
-
 extern unsigned long _stext;
 extern unsigned long _etext;
 extern unsigned long _sdata;
@@ -392,7 +391,7 @@ void ResetHandler(void)
 	while (dest < &_edata) *dest++ = *src++;
 	dest = &_sbss;
 	while (dest < &_ebss) *dest++ = 0;
-	SCB_VTOR = 0;	// use vector table in flash
+	// SCB_VTOR = 0;	// use vector table in flash
 
 	// default all interrupts to medium priority level
 	for (i=0; i < NVIC_NUM_INTERRUPTS; i++) NVIC_SET_PRIORITY(i, 128);

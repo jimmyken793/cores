@@ -50,27 +50,26 @@ CXXFLAGS = -std=gnu++0x -felide-constructors -fno-exceptions -fno-rtti
 CFLAGS =
 
 # linker options
-LDFLAGS = -Os -Wl,--gc-sections -mcpu=cortex-m4 -mthumb 
+LDFLAGS = -Os -Wl,--gc-sections -mcpu=cortex-m4 -mthumb -T $(ROOT_PATH)/$(PLATFORM).ld
 
 # additional libraries to link
 LIBS = -lm
 
 .PHONY:	clean teensy toolchain deploy dfu
 
-all: $(TARGET).hex $(TARGET).srec $(TARGET)-bootloader.hex
+all: $(TARGET).hex $(TARGET).srec
 
 # compiler generated dependency info
 -include $(OBJS:.o=.d)
 
 %.elf: $(OBJS) $(ROOT_PATH)/$(PLATFORM).ld toolchain
-	$(CC) $(LDFLAGS) -T $(ROOT_PATH)/$(PLATFORM).ld -o $@ $(OBJS) $(LIBS)
-
-$(TARGET)-bootloader.elf: $(OBJS) $(ROOT_PATH)/$(PLATFORM)-bootloader.ld toolchain
-	$(CC) $(LDFLAGS) -T $(ROOT_PATH)/$(PLATFORM)-bootloader.ld -o $@ $(OBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
 %.hex: %.elf toolchain
 	$(SIZE) $<
-	$(OBJCOPY) -O ihex $< $@
+	$(OBJCOPY) -O ihex $< tmp.hex
+	(grep -v :00000001FF tmp.hex; cat $(ROOT_PATH)/../bootloader/fc-boot.hex) > $@
+	rm tmp.hex
 
 %.dfu: %.elf
 	$(OBJCOPY) -O binary $< $@
@@ -78,6 +77,9 @@ $(TARGET)-bootloader.elf: $(OBJS) $(ROOT_PATH)/$(PLATFORM)-bootloader.ld toolcha
 
 %.dump: %.elf toolchain
 	$(OBJDUMP) --disassemble $< >$@
+
+%.bin: %.elf toolchain
+	$(OBJCOPY) -O binary $< $@
 
 %.srec: %.elf toolchain
 	$(OBJCOPY) -O srec $< $@
@@ -87,11 +89,11 @@ deploy: $(TARGET).srec
 	dd conv=fsync bs=64k if=$< of=$(DEPLOY_VOLUME)/$<
 	cat $(DEPLOY_VOLUME)/LASTSTAT.TXT
 
-dfu: $(TARGET)-bootloader.dfu
+dfu: $(TARGET).dfu
 	$(DFU_UTIL) -D $<
 
 clean:
-	-rm -rf $(LIB_OBJS) $(APP_OBJS) $(TARGET).hex $(TARGET).dump $(TARGET).out $(TARGET).srec $(TARGET).elf $(OBJS:.o=.d) $(TARGET)-bootloader.bin $(TARGET)-bootloader.elf
+	-rm -rf $(LIB_OBJS) $(APP_OBJS) $(TARGET).hex $(TARGET).dump $(TARGET).out $(TARGET).srec $(TARGET).elf $(OBJS:.o=.d) $(TARGET).dfu
 
 teensy: $(TARGET).hex $(ROOT_PATH)/tools/teensy_loader_cli/teensy_loader_cli
 	$(ROOT_PATH)/tools/teensy_loader_cli/teensy_loader_cli -mmcu=$(PLATFORM) $< -w -v
