@@ -1,4 +1,8 @@
 *.d
 *.o
 *.hex
+*.elf
+*.dump
+*.srec
+*.dfu
 dennao/tools/*
